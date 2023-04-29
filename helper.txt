@@ -1,0 +1,54 @@
+SELECT pick_up_id, count(pick_up_id), COUNT(drop_off_id)
+FROM Trip
+GROUP BY pick_up_id
+ORDER BY COUNT(pick_up_id) DESC 
+LIMIT 5;
+
+
+SELECT pick_up_id, count(id), 
+FROM Trip
+GROUP BY pick_up_id
+ORDER BY count(pick_up_id) DESC 
+
+74	23623
+41	21244
+75	20905
+7	18822
+82	17274
+
+SELECT drop_off_id, count(id), 
+FROM Trip
+GROUP BY drop_off_id 
+ORDER BY count(drop_off_id) DESC 
+
+
+74	12783
+42	12546
+7	12398
+41	11229
+129	10979
+
+
+
+SELECT drop_off_id, count(pick_up_id), COUNT(drop_off_id) OVER (PARTITION BY pick_up_id) AS mx
+FROM Trip
+GROUP BY drop_off_id
+ORDER BY COUNT(drop_off_id) DESC
+LIMIT 5
+
+
+    @Query("COUNT(dropOff) " +
+            "FROM Trip " +
+            "WHERE pickUp = :pickUpId " +
+            "GROUP BY dropOff " +
+            "ORDER BY COUNT(dropOff) DESC " +
+            "LIMIT 5")
+    Integer getTotalDropOffsByPickUpId(Integer pickUpId);
+
+    @Query("COUNT(pickUps) " +
+            "FROM Trip " +
+            "WHERE dropOff = :dropOffId " +
+            "GROUP BY dropOff " +
+            "ORDER BY COUNT(dropOff) DESC " +
+            "LIMIT 5")
+    Integer getTotalPickUpsByDropOffId(Integer dropOffId);
