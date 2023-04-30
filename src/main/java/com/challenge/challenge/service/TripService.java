@@ -14,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.function.Function;
 
@@ -39,10 +41,10 @@ public class TripService {
     }
 
     public List<ZoneTripsDto> sumOfPicksUpsAndDropOffsByZoneAndDate(Integer zone, String date ){
-        String begin = date + "T00:00:00.00";
-        String end = date + "T23:59:59.999";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.parse(date, formatter);
 
-        List<TopZoneTuple> zones = tripRepository.getSumOfPicksUpsAndDropOffsByZoneAndDate(zone, begin, end);
+        List<TopZoneTuple> zones = tripRepository.getSumOfPicksUpsAndDropOffsByZoneAndDate(zone, localDate, localDate);
 
         return zones.stream().map(convertTopZoneTupleToZoneTripsDto(date)).toList();
     }
