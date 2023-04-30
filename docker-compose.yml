@@ -13,6 +13,8 @@ services:
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=challenge
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    volumes:
+      - /home/lnunes/Projects/data-loader/data:/data
 
   db:
     image: postgres:13
