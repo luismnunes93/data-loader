@@ -373,6 +373,17 @@ transformedTrip.setPickUpId(trip.getPickUpId());
 transformedTrip.setDropOffId(trip.getDropOffId());
 ```
 
+### Data importation
+
+Data is imported monthly at 1pm (1pm so there are no problems with summer), this way it never runs before midnight.
+
+    @Scheduled(cron="0 0 1 1 1/1 *")
+    void importData() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
+        importDataService.importAllData();
+    }
+
+As I explained in [Loading Data](#loading-data) there is a way to manually import all the data.
+
 ### Queries
 
 I was not able to do achieve the result using simple jpa queries. So I had to use `@Query` as `nativeQuery = true`
