@@ -3,11 +3,14 @@ package com.challenge.challenge.service;
 import com.challenge.challenge.domain.helper.TopZoneTuple;
 import com.challenge.challenge.domain.model.Trip;
 import com.challenge.challenge.dto.TopZoneDto;
+import com.challenge.challenge.dto.TripDto;
 import com.challenge.challenge.dto.ZoneTripsDto;
+import com.challenge.challenge.mapper.TripMapper;
 import com.challenge.challenge.repository.TripRepository;
 import com.querydsl.core.types.Predicate;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -25,8 +28,10 @@ import java.util.function.Function;
 public class TripService {
 
     private final TripRepository tripRepository;
-    public Page<Trip> findAllPageAndFilter(Predicate predicate, Pageable page){
-        return this.tripRepository.findAll(predicate, page);
+    public Page<TripDto> findAllPageAndFilter(Predicate predicate, Pageable page){
+        TripMapper mapper = Mappers.getMapper(TripMapper.class);
+
+        return this.tripRepository.findAll(predicate, page).map(mapper::convertToDto);
     }
 
     public List<TopZoneDto> getTopByLimit(String order, Integer limit){

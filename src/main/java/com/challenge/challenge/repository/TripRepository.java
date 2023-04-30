@@ -28,7 +28,8 @@ public interface TripRepository extends JpaRepository<Trip, Long>, QuerydslPredi
             ON (pu.pick_up_id = doff.drop_off_id)
             INNER JOIN Zone z
             ON pu.pick_up_id = z.id
-            ORDER BY pu_total DESC LIMIT :limit""",
+            ORDER BY pu_total DESC 
+            LIMIT :limit""",
             nativeQuery = true)
     List<TopZoneTuple> getTopPickUpByLimit(@Param("limit") Integer limit);
 
@@ -45,7 +46,8 @@ public interface TripRepository extends JpaRepository<Trip, Long>, QuerydslPredi
             ON (pu.pick_up_id = doff.drop_off_id)
             INNER JOIN Zone z
             ON (pu.pick_up_id = z.id)
-            ORDER BY do_total DESC LIMIT ?1""", nativeQuery = true)
+            ORDER BY do_total DESC 
+            LIMIT ?1""", nativeQuery = true)
     List<TopZoneTuple> getTopDropOffByLimit(Integer limit);
 
     @Query(value = """

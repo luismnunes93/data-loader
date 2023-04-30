@@ -47,9 +47,7 @@ public class ZoneController {
     public ResponseEntity<Page<TripDto>> findPageAndFilter(@QuerydslPredicate(root = Trip.class) Predicate predicate,
                                                         Pageable page){
 
-        TripMapper mapper = Mappers.getMapper(TripMapper.class);
-
-        return new ResponseEntity<>(this.tripService.findAllPageAndFilter(predicate, page).map(mapper::convertToDto),
+        return new ResponseEntity<>(this.tripService.findAllPageAndFilter(predicate, page),
                 HttpStatus.OK);
     }
 }

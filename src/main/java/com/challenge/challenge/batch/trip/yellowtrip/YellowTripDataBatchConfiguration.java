@@ -43,7 +43,7 @@ public class YellowTripDataBatchConfiguration {
     }
 
     @Bean
-    public TripItemProcessor yellowTripProcessor() {
+    public TripItemProcessor tripProcessor() {
         return new TripItemProcessor();
     }
 
@@ -63,7 +63,7 @@ public class YellowTripDataBatchConfiguration {
         return new StepBuilder("yellowTripStep1", jobRepository)
                 .<TripCsv, TripDbFaker> chunk(chunkSize, transactionManager)
                 .reader(yellowTripReader())
-                .processor(yellowTripProcessor())
+                .processor(tripProcessor())
                 .writer(writer)
                 .build();
     }

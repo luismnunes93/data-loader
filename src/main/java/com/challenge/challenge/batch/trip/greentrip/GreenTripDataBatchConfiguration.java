@@ -44,7 +44,7 @@ public class GreenTripDataBatchConfiguration {
     }
 
     @Bean
-    public TripItemProcessor greenTripProcessor() {
+    public TripItemProcessor tripItemProcessor() {
         return new TripItemProcessor();
     }
 
@@ -63,7 +63,7 @@ public class GreenTripDataBatchConfiguration {
         return new StepBuilder("greenTripStep1", jobRepository)
                 .<TripCsv, TripDbFaker> chunk(chunkSize, transactionManager)
                 .reader(greenTripReader())
-                .processor(greenTripProcessor())
+                .processor(tripItemProcessor())
                 .writer(writer)
                 .build();
     }
