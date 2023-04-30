@@ -5,14 +5,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class TripDbFaker {
 
-    private String pickUpDate;
-    private String dropOffDate;
+    private LocalDateTime pickUpDate;
+    private LocalDateTime dropOffDate;
 
     private Integer pickUpId;
     private Integer dropOffId;

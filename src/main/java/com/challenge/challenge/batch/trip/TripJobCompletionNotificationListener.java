@@ -1,4 +1,4 @@
-package com.challenge.challenge.batch;
+package com.challenge.challenge.batch.trip;
 
 import com.challenge.challenge.dto.TripDbFaker;
 import lombok.RequiredArgsConstructor;
@@ -24,11 +24,12 @@ public class TripJobCompletionNotificationListener implements JobExecutionListen
 
             jdbcTemplate.query("SELECT pick_up_date, drop_off_date, pick_up_id, drop_off_id FROM trip",
                     (rs, row) -> new TripDbFaker(
-                            rs.getString(1),
-                            rs.getString(2),
+                            rs.getTimestamp(1).toLocalDateTime(),
+                            rs.getTimestamp(2).toLocalDateTime(),
                             rs.getInt(3),
                             rs.getInt(4))
             ).forEach(person -> log.info("Found <{{}}> in the database.", person));
+
         }
     }
 }
