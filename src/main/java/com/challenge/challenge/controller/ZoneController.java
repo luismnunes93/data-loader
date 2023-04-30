@@ -36,7 +36,7 @@ public class ZoneController {
     }
 
     @GetMapping("/zone-trips")
-    public ResponseEntity<List<ZoneTripsDto>> sumOfPicksUpsAndDropOffsByZoneAndDate(@RequestParam Integer zone,
+    public ResponseEntity<ZoneTripsDto> sumOfPicksUpsAndDropOffsByZoneAndDate(@RequestParam Integer zone,
                                                                                     @RequestParam String date){
 
         return new ResponseEntity<>(this.tripService.sumOfPicksUpsAndDropOffsByZoneAndDate(zone, date),

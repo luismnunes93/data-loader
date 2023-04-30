@@ -40,13 +40,13 @@ public class TripService {
         return zones.stream().map(convertTopZoneTupleToTopZoneDto()).toList();
     }
 
-    public List<ZoneTripsDto> sumOfPicksUpsAndDropOffsByZoneAndDate(Integer zone, String date ){
+    public ZoneTripsDto sumOfPicksUpsAndDropOffsByZoneAndDate(Integer zone, String date ){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(date, formatter);
 
-        List<TopZoneTuple> zones = tripRepository.getSumOfPicksUpsAndDropOffsByZoneAndDate(zone, localDate, localDate);
+        TopZoneTuple zones = tripRepository.getSumOfPicksUpsAndDropOffsByZoneAndDate(zone, localDate, localDate);
 
-        return zones.stream().map(convertTopZoneTupleToZoneTripsDto(date)).toList();
+        return convertTopZoneTupleToZoneTripsDto(date).apply(zones);
     }
 
     private static Function<TopZoneTuple, ZoneTripsDto> convertTopZoneTupleToZoneTripsDto(String date) {

@@ -66,7 +66,7 @@ public interface TripRepository extends JpaRepository<Trip, Long>, QuerydslPredi
             INNER JOIN Zone z
             ON (pu.pick_up_id = z.id)
             """, nativeQuery = true)
-    List<TopZoneTuple> getSumOfPicksUpsAndDropOffsByZoneAndDate(@Param("zone") Integer zone,
+    TopZoneTuple getSumOfPicksUpsAndDropOffsByZoneAndDate(@Param("zone") Integer zone,
                                                                 @Param("beginDate") LocalDate beginDate,
                                                                 @Param("endDate") LocalDate endDate);
 }
