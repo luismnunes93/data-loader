@@ -35,7 +35,7 @@ public class TripService {
         switch (order){
             case "pickups" -> zones = tripRepository.getTopPickUpByLimit(limit);
             case "dropoffs" -> zones = tripRepository.getTopDropOffByLimit(limit);
-            default -> throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Very Wrong");
+            default -> throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
         return zones.stream().map(convertTopZoneTupleToTopZoneDto()).toList();
     }
