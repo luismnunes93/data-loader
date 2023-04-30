@@ -1,6 +1,6 @@
 package com.challenge.challenge.config;
 
-import com.challenge.challenge.batch.greentrip.GreenTripItemProcessor;
+import com.challenge.challenge.batch.trip.greentrip.GreenTripItemProcessor;
 import com.challenge.challenge.dto.GreenTripDto;
 import com.challenge.challenge.dto.TripDbFaker;
 import org.springframework.batch.core.Job;
@@ -23,8 +23,11 @@ import org.springframework.transaction.PlatformTransactionManager;
 @Configuration
 public class GreenTripDataBatchConfiguration {
 
-    @Value("${tripdata.green.location}")
+    @Value("${data.trip.green.location}")
     private String zonesCSVLocation;
+
+    @Value("${chunk.trip.size}")
+    private Integer chunkSize;
 
     @Bean
     public FlatFileItemReader<GreenTripDto> greenTripReader() {
@@ -58,7 +61,7 @@ public class GreenTripDataBatchConfiguration {
     public Step greenTripStep1(JobRepository jobRepository,
                                PlatformTransactionManager transactionManager, JdbcBatchItemWriter<TripDbFaker> writer) {
         return new StepBuilder("greenTripStep1", jobRepository)
-                .<GreenTripDto, TripDbFaker> chunk(10, transactionManager)
+                .<GreenTripDto, TripDbFaker> chunk(chunkSize, transactionManager)
                 .reader(greenTripReader())
                 .processor(greenTripProcessor())
                 .writer(writer)

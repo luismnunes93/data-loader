@@ -1,6 +1,6 @@
 package com.challenge.challenge.config;
 
-import com.challenge.challenge.batch.yellowtrip.YellowTripItemProcessor;
+import com.challenge.challenge.batch.trip.yellowtrip.YellowTripItemProcessor;
 import com.challenge.challenge.dto.TripDbFaker;
 import com.challenge.challenge.dto.YellowTripDto;
 import org.springframework.batch.core.Job;
@@ -22,8 +22,11 @@ import org.springframework.transaction.PlatformTransactionManager;
 @Configuration
 public class YellowTripDataBatchConfiguration {
 
-    @Value("${tripdata.yellow.location}")
+    @Value("${data.trip.yellow.location}")
     private String zonesCSVLocation;
+
+    @Value("${chunk.trip.size}")
+    private Integer chunkSize;
 
     @Bean
     public FlatFileItemReader<YellowTripDto> yellowTripReader() {
@@ -58,7 +61,7 @@ public class YellowTripDataBatchConfiguration {
     public Step yellowTripStep1(JobRepository jobRepository,
                                PlatformTransactionManager transactionManager, JdbcBatchItemWriter<TripDbFaker> writer) {
         return new StepBuilder("yellowTripStep1", jobRepository)
-                .<YellowTripDto, TripDbFaker> chunk(10, transactionManager)
+                .<YellowTripDto, TripDbFaker> chunk(chunkSize, transactionManager)
                 .reader(yellowTripReader())
                 .processor(yellowTripProcessor())
                 .writer(writer)

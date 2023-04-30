@@ -26,8 +26,11 @@ import javax.sql.DataSource;
 @Configuration
 public class ZoneBatchConfiguration {
 
-    @Value("${zones.location}")
+    @Value("${data.zones.location}")
     private String zonesCSVLocation;
+
+    @Value("${chunk.zone.size}")
+    private Integer chunkSize;
 
     @Bean
     public FlatFileItemReader<Zone> zoneReader() {
@@ -72,7 +75,7 @@ public class ZoneBatchConfiguration {
     public Step zoneStep1(JobRepository jobRepository,
                           PlatformTransactionManager transactionManager, JdbcBatchItemWriter<Zone> writer) {
         return new StepBuilder("zoneStep1", jobRepository)
-                .<Zone, Zone> chunk(10, transactionManager)
+                .<Zone, Zone> chunk(chunkSize, transactionManager)
                 .reader(zoneReader())
                 .processor(zoneProcessor())
                 .writer(writer)
