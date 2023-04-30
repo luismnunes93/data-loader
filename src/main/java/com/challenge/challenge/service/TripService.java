@@ -45,6 +45,9 @@ public class TripService {
             case "dropoffs" -> zones = tripRepository.getTopDropOffByLimit(limit);
             default -> throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
+
+        if(zones == null) return null;
+
         return zones.stream().map(convertTopZoneTupleToTopZoneDto()).toList();
     }
 
@@ -53,6 +56,8 @@ public class TripService {
         LocalDate localDate = LocalDate.parse(date, formatter);
 
         TopZoneTuple zones = tripRepository.getSumOfPicksUpsAndDropOffsByZoneAndDate(zone, localDate, localDate);
+
+        if(zones == null) return null;
 
         return convertTopZoneTupleToZoneTripsDto(date).apply(zones);
     }
