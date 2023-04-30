@@ -1,8 +1,8 @@
-package com.challenge.challenge.config;
+package com.challenge.challenge.batch.trip.greentrip;
 
-import com.challenge.challenge.batch.trip.greentrip.GreenTripItemProcessor;
-import com.challenge.challenge.dto.GreenTripDto;
-import com.challenge.challenge.dto.TripDbFaker;
+import com.challenge.challenge.batch.trip.TripItemProcessor;
+import com.challenge.challenge.domain.csv.TripCsv;
+import com.challenge.challenge.domain.helper.TripDbFaker;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
@@ -30,22 +30,22 @@ public class GreenTripDataBatchConfiguration {
     private Integer chunkSize;
 
     @Bean
-    public FlatFileItemReader<GreenTripDto> greenTripReader() {
-        return new FlatFileItemReaderBuilder<GreenTripDto>()
+    public FlatFileItemReader<TripCsv> greenTripReader() {
+        return new FlatFileItemReaderBuilder<TripCsv>()
                 .name("greenTripReader")
-                .resource(new PathResource(zonesCSVLocation + "green_tripdata_2018-01_01-15.csv"))
+                .resource(new PathResource(zonesCSVLocation + "green_tripdata.csv"))
                 .delimited()
-                .names("a", "pickUpDate", "dropOffDate", "b", "c", "pickUp", "dropOff",
-                        "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o")
-                .fieldSetMapper(new BeanWrapperFieldSetMapper<GreenTripDto>() {{
-                    setTargetType(GreenTripDto.class);
+                .includedFields(new Integer[] {1,2,5,6})
+                .names("pickUpDate", "dropOffDate", "pickUp", "dropOff")
+                .fieldSetMapper(new BeanWrapperFieldSetMapper<TripCsv>() {{
+                    setTargetType(TripCsv.class);
                 }})
                 .build();
     }
 
     @Bean
-    public GreenTripItemProcessor greenTripProcessor() {
-        return new GreenTripItemProcessor();
+    public TripItemProcessor greenTripProcessor() {
+        return new TripItemProcessor();
     }
 
     @Bean
@@ -61,7 +61,7 @@ public class GreenTripDataBatchConfiguration {
     public Step greenTripStep1(JobRepository jobRepository,
                                PlatformTransactionManager transactionManager, JdbcBatchItemWriter<TripDbFaker> writer) {
         return new StepBuilder("greenTripStep1", jobRepository)
-                .<GreenTripDto, TripDbFaker> chunk(chunkSize, transactionManager)
+                .<TripCsv, TripDbFaker> chunk(chunkSize, transactionManager)
                 .reader(greenTripReader())
                 .processor(greenTripProcessor())
                 .writer(writer)

@@ -1,8 +1,7 @@
-package com.challenge.challenge.batch.trip.yellowtrip;
+package com.challenge.challenge.batch.trip;
 
-
-import com.challenge.challenge.dto.TripDbFaker;
-import com.challenge.challenge.dto.YellowTripDto;
+import com.challenge.challenge.domain.csv.TripCsv;
+import com.challenge.challenge.domain.helper.TripDbFaker;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.batch.item.ItemProcessor;
 
@@ -10,11 +9,11 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Log4j2
-public class YellowTripItemProcessor implements ItemProcessor<YellowTripDto, TripDbFaker> {
+public class TripItemProcessor implements ItemProcessor<TripCsv, TripDbFaker> {
+
 
     @Override
-    public TripDbFaker process(final YellowTripDto trip) throws Exception {
-
+    public TripDbFaker process(final TripCsv trip) throws Exception {
         final TripDbFaker transformedTrip = new TripDbFaker();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

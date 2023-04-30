@@ -1,6 +1,6 @@
 package com.challenge.challenge.batch.trip;
 
-import com.challenge.challenge.dto.TripDbFaker;
+import com.challenge.challenge.domain.helper.TripDbFaker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.batch.core.BatchStatus;

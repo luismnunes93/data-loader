@@ -1,8 +1,8 @@
-package com.challenge.challenge.config;
+package com.challenge.challenge.batch.trip.yellowtrip;
 
-import com.challenge.challenge.batch.trip.yellowtrip.YellowTripItemProcessor;
-import com.challenge.challenge.dto.TripDbFaker;
-import com.challenge.challenge.dto.YellowTripDto;
+import com.challenge.challenge.batch.trip.TripItemProcessor;
+import com.challenge.challenge.domain.csv.TripCsv;
+import com.challenge.challenge.domain.helper.TripDbFaker;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
@@ -29,22 +29,22 @@ public class YellowTripDataBatchConfiguration {
     private Integer chunkSize;
 
     @Bean
-    public FlatFileItemReader<YellowTripDto> yellowTripReader() {
-        return new FlatFileItemReaderBuilder<YellowTripDto>()
+    public FlatFileItemReader<TripCsv> yellowTripReader() {
+        return new FlatFileItemReaderBuilder<TripCsv>()
                 .name("yellowTripReader")
-                .resource(new PathResource(zonesCSVLocation + "yellow_tripdata_2018-01_01-15.csv"))
+                .resource(new PathResource(zonesCSVLocation + "yellow_tripdata.csv"))
                 .delimited()
-                .names("a", "pickUpDate", "dropOffDate", "b", "c", "d", "e", "pickUp", "dropOff",
-                        "f", "g", "h", "i", "j", "k", "l", "m")
+                .includedFields(new Integer[] {1,2,7,8})
+                .names("pickUpDate", "dropOffDate", "pickUp", "dropOff")
                 .fieldSetMapper(new BeanWrapperFieldSetMapper<>() {{
-                    setTargetType(YellowTripDto.class);
+                    setTargetType(TripCsv.class);
                 }})
                 .build();
     }
 
     @Bean
-    public YellowTripItemProcessor yellowTripProcessor() {
-        return new YellowTripItemProcessor();
+    public TripItemProcessor yellowTripProcessor() {
+        return new TripItemProcessor();
     }
 
     @Bean
@@ -61,7 +61,7 @@ public class YellowTripDataBatchConfiguration {
     public Step yellowTripStep1(JobRepository jobRepository,
                                PlatformTransactionManager transactionManager, JdbcBatchItemWriter<TripDbFaker> writer) {
         return new StepBuilder("yellowTripStep1", jobRepository)
-                .<YellowTripDto, TripDbFaker> chunk(chunkSize, transactionManager)
+                .<TripCsv, TripDbFaker> chunk(chunkSize, transactionManager)
                 .reader(yellowTripReader())
                 .processor(yellowTripProcessor())
                 .writer(writer)

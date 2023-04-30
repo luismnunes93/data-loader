@@ -1,4 +1,4 @@
-package com.challenge.challenge.dto;
+package com.challenge.challenge.domain.helper;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

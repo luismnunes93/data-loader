@@ -1,8 +1,6 @@
-package com.challenge.challenge.config;
+package com.challenge.challenge.batch.zone;
 
-import com.challenge.challenge.batch.zone.ZoneJobCompletionNotificationListener;
 import com.challenge.challenge.domain.model.Zone;
-import com.challenge.challenge.batch.zone.ZoneItemProcessor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;

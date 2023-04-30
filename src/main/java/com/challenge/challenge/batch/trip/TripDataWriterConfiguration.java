@@ -1,6 +1,6 @@
-package com.challenge.challenge.config;
+package com.challenge.challenge.batch.trip;
 
-import com.challenge.challenge.dto.TripDbFaker;
+import com.challenge.challenge.domain.helper.TripDbFaker;
 import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider;
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilder;
@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import javax.sql.DataSource;
 
 @Configuration
-public class TripDataBatchConfiguration {
+public class TripDataWriterConfiguration {
     @Bean
     public JdbcBatchItemWriter<TripDbFaker> tripWriter(DataSource dataSource) {
         return new JdbcBatchItemWriterBuilder<TripDbFaker>()
